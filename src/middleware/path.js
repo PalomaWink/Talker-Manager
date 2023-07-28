@@ -8,9 +8,4 @@ const path = async () => {
     return data;
 };
 
-const pathWrite = async (talker) => {
-    const pathComplete = join(__dirname, '..', 'talker.json');
-    await fs.writeFile(pathComplete, talker, 'utf8');
-};
-
-module.exports = { path, pathWrite };
+module.exports = path;
