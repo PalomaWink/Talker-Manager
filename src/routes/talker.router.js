@@ -33,7 +33,6 @@ router.post('/talker', verifyToken, verifyname, verifyAge, verifyTalk,
   const updateTalkers = JSON.stringify(talkers);
   const pathComplete = join(__dirname, '..', 'talker.json');
   await fs.writeFile(pathComplete, updateTalkers, 'utf8');
-  // await pathWrite(updateTalkers);
   return res.status(201).json(newTalker);
 });
 

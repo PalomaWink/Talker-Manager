@@ -41,15 +41,15 @@ const verifyTalker = (req, res, next) => {
   next();
 };
 
-const isValidatedRate = (rate) => rate <= 1 || rate >= 5 || !Number.isInteger(rate);
+const isValidatedRate = (rate) => rate >= 1.0 && rate <= 5.0 && Number.isInteger(rate);
 
 const verifyTalker2 = (req, res, next) => {
   const { talk } = req.body;
-  if (!talk.rate && talk.rate !== 0) {
+  if (talk.rate === undefined || talk.rate === null) {
     return res.status(400)
       .json({ message: 'O campo "rate" é obrigatório' });
   }
-  if (isValidatedRate(talk.rate)) {
+  if (!isValidatedRate(talk.rate) || talk.rate === 0) {
     return res.status(400)
       .json({ message: 'O campo "rate" deve ser um número inteiro entre 1 e 5' });
   }
