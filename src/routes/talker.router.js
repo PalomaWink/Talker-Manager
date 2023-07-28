@@ -5,7 +5,7 @@ const { join } = require('path');
 const { verifyAge, verifyTalk, verifyname,
   verifyTalker, verifyTalker2 } = require('../middleware/verifyLogin');
 const verifyToken = require('../middleware/verifyToken');
-const { path, pathWrite } = require('../middleware/path');
+const { path } = require('../middleware/path');
 
 const router = express.Router();
 
