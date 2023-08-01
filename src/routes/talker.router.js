@@ -47,16 +47,27 @@ router.get('/talker/:id', async (req, res) => {
   return res.status(200).json(talker);
 });
 
-/* router.put('/talker/:id', verifyToken, 
-  verifyname, verifyAge, verifyTalker, verifyTalker2, verifyPanelist, (req, res) => {
+router.put('/talker/:id', verifyToken, 
+verifyname, verifyAge, verifyTalk, verifyTalker, verifyTalker2, async (req, res) => {
   const { id } = req.params;
   const { name, age, talk } = req.body;
   const { watchedAt, rate } = talk;
-  const data = path();
-  
-    res.status(200).json({ message: 'ok' });
-
-}); */
+  const pathComplete = join(__dirname, '..', 'talker.json');
+  const talkers = await fs.readFile(pathComplete, 'utf8');
+  let data = JSON.parse(talkers);
+  const validation = data.find((talker) => talker.id === Number(id));
+  if (!validation) {
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+}
+  data = data.map((user) => {
+    if (Number(user.id) === Number(id)) {
+      return { ...user, name, age, talk: { watchedAt, rate } };
+    }
+    return user;
+  });
+  await fs.writeFile(pathComplete, JSON.stringify(data), 'utf8');
+  res.status(200).json({ id: Number(id), name, age, talk: { watchedAt, rate } });
+});
 
 router.delete('/talker/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
