@@ -37,6 +37,26 @@ router.post('/talker', verifyToken, verifyname, verifyAge, verifyTalk,
   return res.status(201).json(newTalker);
 });
 
+router.get('/talker/search', verifyToken, async (req, res) => {
+  const searchTerm = req.query.q;
+  const pathComplete = join(__dirname, '..', 'talker.json');
+  const talkers = await fs.readFile(pathComplete, 'utf8');
+  const data = JSON.parse(talkers);
+  
+  if (!searchTerm) {
+    return res.status(200).json(data);
+  }
+
+  const valueFilter = data.filter((talker) => 
+    talker.name.includes(searchTerm));
+
+  if (!valueFilter) {
+    return res.status(200).json([]);
+  }
+
+  return res.status(200).json(valueFilter);
+});
+
 router.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const data = await path();
